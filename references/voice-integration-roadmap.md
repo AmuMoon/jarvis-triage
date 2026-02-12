@@ -140,6 +140,6 @@ User: [Voice] "选A"
 - [x] Manual voice trigger works
 - [x] Voice content extracted correctly from samples
 - [x] Voice length within 30s limit
-- [ ] Auto-voice for Level 4 (Phase 2)
-- [ ] Voice command recognition (Phase 3)
+- [x] Auto-voice for Level 4 (Phase 2)
+- [x] Voice command recognition (Phase 2)
 - [ ] AR HUD sync (Phase 4)
