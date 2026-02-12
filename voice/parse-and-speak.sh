@@ -115,8 +115,8 @@ extract_voice_content() {
     local file="$1"
     
     # Try various patterns to extract voice content
-    # Pattern 1: Markdown section
-    local content=$(sed -n '/^###* 语音版/,/^###* /p' "$file" 2>/dev/null | sed '1d;$d' | sed '/^$/d' | head -20)
+    # Pattern 1: Markdown section header followed by content
+    local content=$(sed -n '/^###* 语音版/,/^$/p' "$file" 2>/dev/null | sed '1d' | sed '/^$/d' | head -20)
     
     if [[ -n "$content" ]]; then
         echo "$content"

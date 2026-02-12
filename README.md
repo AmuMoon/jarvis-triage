@@ -92,6 +92,32 @@ In any OpenClaw channel (Telegram, WhatsApp, etc.):
 
 The skill automatically detects content type and applies the appropriate triage level.
 
+### Phase 2: Voice Commands (NEW)
+
+When reviewing a Level 4 Plan, you can use voice commands to respond:
+
+```
+# Select options
+"选A" / "选择A" / "选项一" / "第一个"
+"选B" / "选择B" / "选项二" / "第二个"
+
+# Approve or reject
+"确认" / "执行" / "approve" / "可以"
+"取消" / "否决" / "reject" / "不行"
+
+# Navigation
+"下一个" / "继续" / "next"
+"上一个" / "返回" / "back"
+"重复" / "再说一遍" / "repeat"
+"详细" / "展开" / "detail"
+
+# Combo commands (multiple actions)
+"选A，继续"      → Select A + Next decision
+"选B，确认执行"  → Select B + Approve plan
+```
+
+**Auto-Voice**: Level 4 plans automatically play voice summary when generated.
+
 ## File Structure
 
 ```
@@ -99,7 +125,21 @@ jarvis-triage/
 ├── SKILL.md                          # Core skill instructions
 ├── references/
 │   ├── triage-levels.md              # Detailed level definitions + edge cases
-│   └── plan-mode-examples.md         # Plan type examples (new feature / refactor / bugfix / QA)
+│   ├── plan-mode-examples.md         # Plan type examples
+│   └── voice-integration-roadmap.md  # Phase 1-5 voice roadmap
+├── voice/                            # Voice integration scripts
+│   ├── voice-speak.sh                # Direct TTS conversion
+│   ├── parse-and-speak.sh            # Extract and speak from file
+│   ├── voice-trigger.sh              # Handle voice activation
+│   ├── auto-voice.sh                 # Auto-trigger for Level 4 plans (Phase 2)
+│   └── parse-command.sh              # Voice command parser (Phase 2)
+├── tests/                            # Test suite
+│   ├── samples/                      # 6 test scenarios (Level 0-4)
+│   ├── scenarios/                    # Plan type definitions
+│   ├── scripts/                      # Test runners
+│   ├── voice/                        # Voice testing tools
+│   ├── phase2-test.sh                # Phase 2 test suite
+│   └── PHASE1-TEST-REPORT.md         # Test results
 ├── README.md
 ├── LICENSE
 └── .gitignore
@@ -108,11 +148,12 @@ jarvis-triage/
 ## Roadmap
 
 - [x] **Phase 0** — Core SKILL.md with Level 0-4 triage logic
-- [ ] **Phase 0.5** — Real-world testing & prompt iteration
-- [ ] **Phase 1** — Voice integration (OpenClaw Voice / TTS)
-- [ ] **Phase 2** — AR HUD integration (Even Realities G1 via AugmentOS SDK)
-- [ ] **Phase 3** — Auto-triage via AGENTS.md / Hooks (no manual trigger)
-- [ ] **Phase 4** — Open source "Jarvis Mode" full stack
+- [x] **Phase 0.5** — Real-world testing framework with samples ✅
+- [x] **Phase 1** — Voice integration (OpenClaw TTS) ✅
+- [x] **Phase 2** — Auto-voice & voice commands ✅
+- [ ] **Phase 3** — AR HUD integration (Even Realities G1 via AugmentOS SDK)
+- [ ] **Phase 4** — Auto-triage via AGENTS.md / Hooks (no manual trigger)
+- [ ] **Phase 5** — Open source "Jarvis Mode" full stack
 
 ## Part of Jarvis Mode
 

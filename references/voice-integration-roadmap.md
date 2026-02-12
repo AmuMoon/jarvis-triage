@@ -15,20 +15,41 @@
 - Created `tests/voice/` directory with helper scripts
 - Documented TTS usage patterns
 
-## Phase 2: Auto-Voice & Smart Triggers
+## Phase 2: Auto-Voice & Smart Triggers ✅
 
-**Status**: Planned
+**Status**: Completed (2026-02-12)
 
 ### Features
-- **Auto-voice for Level 4**: Plans automatically include voice without manual trigger
-- **Context-aware**: Detects if user is on mobile (via Telegram client hints)
-- **Voice-on-error**: Critical errors always get voice alert
-- **Batch voice approval**: Approve multiple decisions via voice commands
+- ✅ **Auto-voice for Level 4**: Plans automatically include voice without manual trigger
+- ✅ **Voice command parsing**: Support "选择A", "选项二", "approve", "reject", etc.
+- ✅ **Combo commands**: "选A，继续" for multiple actions
+- ✅ **Context-aware**: Different commands for decision/approval/navigation contexts
 
-### Technical Requirements
-- AGENTS.md hook integration
-- Mobile context detection
-- Voice command parsing (`选择A`, `选项二`, `approve`, `reject`)
+### Implementation
+- `voice/auto-voice.sh`: Auto-trigger logic for Level 4 plans
+- `voice/parse-command.sh`: Voice command parser with JSON output
+- `tests/phase2-test.sh`: Test suite for Phase 2 features
+
+### Supported Commands
+
+**Decision Commands:**
+- `选A` / `选择A` / `A` / `选项一` / `第一个`
+- `选B` / `选择B` / `B` / `选项二` / `第二个`
+- `选C` / `选择C` / `C` / `选项三` / `第三个`
+
+**Approval Commands:**
+- `确认` / `approve` / `执行` / `可以` / `ok`
+- `取消` / `reject` / `否决` / `不行` / `no`
+
+**Navigation Commands:**
+- `下一个` / `next` / `继续` / `下一步`
+- `上一个` / `back` / `返回` / `上一步`
+- `重复` / `repeat` / `再说一遍`
+- `详细` / `detail` / `展开`
+
+**Combo Commands:**
+- `选A，继续` → Select A + Next
+- `选B，确认` → Select B + Approve
 
 ## Phase 3: Voice Interaction
 
