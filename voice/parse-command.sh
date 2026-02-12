@@ -28,9 +28,9 @@ if [[ -z "$INPUT" ]]; then
     exit 1
 fi
 
-# Normalize input (lowercase, remove punctuation)
-# Use sed for case conversion to handle UTF-8
-NORMALIZED=$(echo "$INPUT" | sed 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/' | sed 's/[，。！？.,!?]//g')
+# Normalize input (remove punctuation, keep original case for CJK)
+# Note: Chinese doesn't have case, English will be matched case-insensitively
+NORMALIZED=$(echo "$INPUT" | sed 's/[，。！？.,!?]//g')
 
 echo "Input: $INPUT"
 echo "Normalized: $NORMALIZED"
@@ -39,23 +39,52 @@ echo ""
 
 # Decision commands
 parse_decision() {
+    # Convert to lowercase for English matching
+    local lower=$(echo "$NORMALIZED" | tr '[:upper:]' '[:lower:]')
+    
     case "$NORMALIZED" in
-        # Option A
-        "选a"|"选择a"|"a"|"选项一"|"第一个"|"第一个选项"|"option a"|"first")
+        # Option A (Chinese + English)
+        "选A"|"选择A"|"A"|"选项一"|"第一个"|"第一个选项")
             echo '{"action": "select", "option": "A", "confidence": "high"}'
             return 0
             ;;
-        # Option B
-        "选b"|"选择b"|"b"|"选项二"|"第二个"|"第二个选项"|"option b"|"second")
+    esac
+    
+    case "$lower" in
+        # Option A (English variants)
+        "option a"|"first"|"a")
+            echo '{"action": "select", "option": "A", "confidence": "high"}'
+            return 0
+            ;;
+        # Option B (English variants)
+        "option b"|"second"|"b")
             echo '{"action": "select", "option": "B", "confidence": "high"}'
             return 0
             ;;
-        # Option C
-        "选c"|"选择c"|"c"|"选项三"|"第三个"|"第三个选项"|"option c"|"third")
+        # Option C (English variants)
+        "option c"|"third"|"c")
             echo '{"action": "select", "option": "C", "confidence": "high"}'
             return 0
             ;;
     esac
+    
+    # Check for Chinese Option A, B and C using pattern matching
+    # Handle UTF-8 encoding issues by checking for character presence
+    if echo "$INPUT" | grep -qE "(选|選).*[Aa]|[Aa].*(选|選)|选项一|第一|option a|^a$"; then
+        echo '{"action": "select", "option": "A", "confidence": "high"}'
+        return 0
+    fi
+    
+    if echo "$INPUT" | grep -qE "(选|選).*[Bb]|[Bb].*(选|選)|选项二|第二|option b|^b$"; then
+        echo '{"action": "select", "option": "B", "confidence": "high"}'
+        return 0
+    fi
+    
+    if echo "$INPUT" | grep -qE "(选|選).*[Cc]|[Cc].*(选|選)|选项三|第三|option c|^c$"; then
+        echo '{"action": "select", "option": "C", "confidence": "high"}'
+        return 0
+    fi
+    
     return 1
 }
 
