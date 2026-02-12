@@ -1,13 +1,27 @@
-# OS
+# Test results (auto-generated)
+tests/results/
+
+# OS files
 .DS_Store
 Thumbs.db
 
-# IDE
-.vscode/
-.idea/
+# Editor files
 *.swp
 *.swo
+*~
+.vscode/
+.idea/
 
-# Notes (personal testing logs)
-notes/
-test-logs/
+# Node.js (if we add scripts later)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
